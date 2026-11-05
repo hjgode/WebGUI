@@ -66,7 +66,7 @@ const char BUTTON_TEMPLATE[] PROGMEM = R"rawliteral(
 const char SLIDER_TEMPLATE[] PROGMEM = R"rawliteral(
         <div class="webgui-slider-container">
             <label for="%ID%">%LABEL% <span class="webgui-slider-value" id="%ID%_value">%VALUE%</span></label>
-            <input type="range" id="%ID%" class="webgui-slider" min="%MIN%" max="%MAX%" value="%VALUE%">
+            <input type="range" id="%ID%" class="webgui-slider" min="%MIN%" max="%MAX%" value="%VALUE%" style="accent-color:%COLOR%;">
         </div>
 )rawliteral";
 
@@ -711,7 +711,7 @@ String WebGUI::generateJS() {
         }
         
         // Start auto-updating sensor displays every 100ms
-        setInterval(updateSensorDisplays, 100);
+        setInterval(updateSensorDisplays, 1000);
         updateSensorDisplays();
     )rawliteral";
     
@@ -840,8 +840,9 @@ String GUIElement::getValue() {
 // Slider Implementation
 // =====================================================
 
-Slider::Slider(String label, int x, int y, int minValue, int maxValue, int defaultValue, int width) 
-    : GUIElement(label, x, y, width, 60), minValue(minValue), maxValue(maxValue), currentValue(defaultValue), valueChanged(false) {
+Slider::Slider(String label, int x, int y, int minValue, int maxValue, int defaultValue, int width, String trackColor) 
+    : GUIElement(label, x, y, width, 60), minValue(minValue), maxValue(maxValue), currentValue(defaultValue), valueChanged(false), trackColor(trackColor) {
+        
 }
 
 String Slider::generateHTML() {
@@ -851,6 +852,7 @@ String Slider::generateHTML() {
     html.replace("%MIN%", String(minValue));
     html.replace("%MAX%", String(maxValue));
     html.replace("%VALUE%", String(currentValue));
+    html.replace("%COLOR%", trackColor);
     return html;
 }
 

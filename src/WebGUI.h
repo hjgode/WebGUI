@@ -226,7 +226,7 @@ class Toggle : public GUIElement {
 
 class Slider : public GUIElement {
   public:
-    Slider(String label, int x, int y, int minValue, int maxValue, int defaultValue, int width = 300);
+    Slider(String label, int x, int y, int minValue, int maxValue, int defaultValue, int width = 300, String trackColor="#0026ff");
     
     String generateHTML() override;
     String generateCSS() override;
@@ -241,7 +241,7 @@ class Slider : public GUIElement {
     
     void setValue(int value);
     void setRange(int min, int max);
-    
+
     // Debouncing control
     void setDebounceTime(int ms) { debounceMs = ms; }
     int getDebounceTime() { return debounceMs; }
@@ -253,6 +253,7 @@ class Slider : public GUIElement {
     int minValue, maxValue, currentValue;
     bool valueChanged;
     int debounceMs = 100;  // Default 100ms debounce
+    String trackColor = "#0026ff";
 };
 
 class SensorStatus : public GUIElement {
