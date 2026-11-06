@@ -20,6 +20,7 @@
 #include "Arduino.h"
 #include <vector>
 #include "WebGUIStyles.h"
+#include "uptime_formatter.h"
 
 // Platform-specific includes
 #if defined(ARDUINO_UNOWIFIR4)
@@ -326,7 +327,7 @@ class TextBox : public GUIElement {
 
 class SystemStatus : public GUIElement {
   public:
-    SystemStatus(String label, int x, int y, int width = 350);
+    SystemStatus(String label, int x, int y, int width = 200);
     
     String generateHTML() override;
     String generateCSS() override;
@@ -334,26 +335,23 @@ class SystemStatus : public GUIElement {
     void handleUpdate(String value) override; // Not used - read-only
     String getValue() override;
     
-    // Update system information
-    void updateMemory(int freeBytes);
-    void updateUptime(unsigned long uptimeSeconds);
-    void updateSystemInfo(int freeBytes, unsigned long uptimeSeconds);
+    // Set values for different data types
+    void setValue(String value);
+    
+    // Get current display value
+    String getDisplayValue() { return displayValue; }
     
     // Calculate proper height for positioning
-    static int getRequiredHeight() { return 80; }
+    static int getRequiredHeight() { return 120; }
     
   private:
-    String systemInfo;
-    int freeMemory;
-    unsigned long uptime;
-    
-    String formatUptime(unsigned long seconds);
-    String formatMemory(int bytes);
+    String displayValue;
 };
 
 // Utility Functions
 int getFreeRAM();   // Cross-platform memory checking function
 void clearMemory(); // Clear all EEPROM/Preferences memory
+String getUptime();
 
 // Global instance - can be used directly or create your own
 extern WebGUI GUI;
